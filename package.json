@@ -22,7 +22,7 @@
     "smart-buffer": "^4.1.0",
     "smk2mp4": "cmfcmf/smk2mp4",
     "upng-js": "^2.1.0",
-    "wavefile": "^8.4.6",
+    "wavefile": "^11.0.0",
     "xml": "^1.0.1"
   },
   "devDependencies": {
