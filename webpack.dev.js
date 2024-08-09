@@ -27,6 +27,6 @@ module.exports = merge(common, {
     ]
   },
   plugins: [
-    new ForkTsCheckerWebpackPlugin({ tsconfig: "tsconfig.browser.json" })
+    new ForkTsCheckerWebpackPlugin(),
   ]
 });
