@@ -366,14 +366,21 @@ export default class UploadHandler {
   private async parseVideos(annoRoot: JSZip) {
     await this.fs.mkdir("/videos");
 
-    if (!this.hasFolderCaseInsensitive(annoRoot, "VIDEOSMK")) {
-      this.logger.warn("No video files found.");
-      return;
+    let folderName = "VIDEOSMK";
+    if (this.findFilesInZip(annoRoot, folderName, ".smk").length == 0) {
+      folderName = "VideoSmk";
+      if (this.findFilesInZip(annoRoot, folderName, ".smk").length == 0) {
+        folderName = "videosmk";
+        if (this.findFilesInZip(annoRoot, folderName, ".smk").length == 0) {
+          this.logger.warn("No video files found in: " + folderName);
+          return;
+        }
+      }
     }
 
     const smkParser = new SMKParser();
 
-    const videos = this.findFilesInZip(annoRoot, "VIDEOSMK", ".smk");
+    const videos = this.findFilesInZip(annoRoot, folderName, ".smk");
     for (const video of videos) {
       const name = video.path.substr(1);
       this.logger.info(`Converting video ${name}`);
