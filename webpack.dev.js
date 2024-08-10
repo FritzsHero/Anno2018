@@ -1,6 +1,6 @@
 const merge = require("webpack-merge");
 const common = require("./webpack.common.js");
-const webpack = require("webpack");
+const path = require('path');
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = merge(common, {
@@ -27,6 +27,10 @@ module.exports = merge(common, {
     ]
   },
   plugins: [
-    new ForkTsCheckerWebpackPlugin(),
+    new ForkTsCheckerWebpackPlugin({
+      typescript: {
+        configFile: path.join(__dirname, 'tsconfig.browser.json'),
+      },
+    }),
   ]
 });
