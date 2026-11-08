@@ -1,9 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "target": "es2018",
-    "lib": ["es2018", "esnext.array", "dom"],
-    "module": "commonjs"
+    "target": "es2022",
+    "lib": ["es2022", "dom"],
+    "module": "commonjs",
+    "types": ["node", "jest", "pixi.js"]
   },
   "include": [
     "src/**/*"
