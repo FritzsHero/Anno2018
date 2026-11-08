@@ -17,7 +17,7 @@ export default class SMKParser {
       const args = this.prepareArguments(true);
       return await this.convert(args, inputFiles);
     } catch (e) {
-      if (e.message === "only-one-audio-stream") {
+      if ((e as Error).message === "only-one-audio-stream") {
         const args = this.prepareArguments(false);
         return await this.convert(args, inputFiles);
       } else {
@@ -45,14 +45,16 @@ export default class SMKParser {
         "-ac",
         "2", // use stereo audio
 
-        // H.264 options
-        // https://trac.ffmpeg.org/wiki/Encode/H.264
+        // The input SMK's decoded frames use a different pixel format, so
+        // re-encoding to H.264 is currently needed for browser playback.
         "-c:v",
         "libx264",
         "-pix_fmt",
         "yuv420p", // older pix_fmt required for Firefox
         "-preset",
         "ultrafast", // faster encoding, but bigger filesize
+        "-threads",
+        "0", // use the available CPU cores
         "-movflags",
         "+faststart", // faster loading
         "output.mp4"
