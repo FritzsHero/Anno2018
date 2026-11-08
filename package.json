@@ -112,7 +112,7 @@
   "browserslist": "last 2 versions, ie 10",
   "husky": {
     "hooks": {
-      "pre-commit": "yarn run lint"
+      "pre-commit": "npm run lint"
     }
   }
 }
