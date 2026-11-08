@@ -378,10 +378,15 @@ export default class UploadHandler {
       }
     }
 
-    const smkParser = new SMKParser();
-
     const videos = this.findFilesInZip(annoRoot, folderName, ".smk");
-    for (const video of videos) {
+    const smkParser = new SMKParser();
+    let nextVideoIndex = 0;
+    const convertNextVideo = async (): Promise<void> => {
+      const video = videos[nextVideoIndex++];
+      if (!video) {
+        return;
+      }
+
       const name = video.path.substr(1);
       this.logger.info(`Converting video ${name}`);
 
@@ -390,7 +395,12 @@ export default class UploadHandler {
 
       await this.fs.write(`/videos/${name.replace(".smk", ".mp4")}`, result);
       this.logger.info(`Finished converting video ${name}`);
-    }
+      await convertNextVideo();
+    };
+
+    // Run two encodes at a time to reduce total import time without
+    // overwhelming browser memory/CPU with every video at once.
+    await Promise.all([convertNextVideo(), convertNextVideo()]);
   }
 
   private async copyIslands(annoRoot: JSZip) {
